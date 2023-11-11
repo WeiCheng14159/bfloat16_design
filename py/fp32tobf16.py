@@ -10,11 +10,11 @@ def fp32tobf16(x):
 
     if exp == 0 and man == 0:
         # zero
-        return x
+        return (x & 0xffff0000)
 
     if exp == 0x7F800000:
         # infinity or NaNs
-        return x
+        return (x & 0xffff0000)
 
     bit_rep &= 0xffff0000
     y = struct.unpack('f', struct.pack('I', bit_rep))[
