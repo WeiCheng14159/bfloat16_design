@@ -57,7 +57,7 @@ module fpu_tb;
 `elsif ADD
     assign op = 4'b0001;
 `else
-    $error("Option %s not recognized, assume MUL");
+    $display("Operation not recognized, assume MUL");
     assign op = 4'b0100;
 `endif
   end
