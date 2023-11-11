@@ -14,22 +14,22 @@ class bfloat16:
     def __add__(self, other):
         if isinstance(other, bfloat16):
             return bfloat16(self.value + other.value)
-        return bfloat16( bfloat16(self.value) + bfloat16(other) )
+        return bfloat16(bfloat16(self.value) + bfloat16(other))
 
     def __sub__(self, other):
         if isinstance(other, bfloat16):
             return bfloat16(self.value - other.value)
-        return bfloat16( bfloat16(self.value) - bfloat16(other) )
+        return bfloat16(bfloat16(self.value) - bfloat16(other))
 
     def __mul__(self, other):
         if isinstance(other, bfloat16):
             return bfloat16(self.value * other.value)
-        return bfloat16( bfloat16(self.value) * bfloat16(other) )
+        return bfloat16(bfloat16(self.value) * bfloat16(other))
 
     def __truediv__(self, other):
         if isinstance(other, bfloat16):
             return bfloat16(self.value / other.value)
-        return bfloat16( bfloat16(self.value) / bfloat16(other) )
+        return bfloat16(bfloat16(self.value) / bfloat16(other))
 
     def __str__(self):
         return str(self.value)
