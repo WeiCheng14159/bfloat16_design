@@ -84,14 +84,23 @@ check:
 format:
 	find $(SRC_DIR) -name "*.sv" -or -name "*.v" -or -name "*.svh" | xargs verible-verilog-format --inplace
 
-# Run RTL simulation
-rtl: $(BUILD) cp_tb_src
+# Run RTL simulation for MUL
+rtl0: $(BUILD) cp_tb_src
 	cd $(BUILD_DIR); \
 	ncverilog $(SIM_DIR)/$(TB_TOP).v $(SRC) \
 	+incdir+$(SRC_DIR) \
 	+nc64bit \
 	+access+r \
-	+define+FSDB_FILE=\"$(TOP).fsdb\"
+	+define+MUL
+
+# Run RTL simulation for ADD
+rtl1: $(BUILD) cp_tb_src
+	cd $(BUILD_DIR); \
+	ncverilog $(SIM_DIR)/$(TB_TOP).v $(SRC) \
+	+incdir+$(SRC_DIR) \
+	+nc64bit \
+	+access+r \
+	+define+ADD
 
 # View waveform using nWave
 nw: $(BUILD)
