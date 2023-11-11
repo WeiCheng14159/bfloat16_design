@@ -52,14 +52,14 @@ module fpu_tb;
   end
 
   initial begin
-    `ifdef MUL
-      assign op = 4'b0100;
-    `elsif ADD
-      assign op = 4'b0001;
-    `else 
-      $error("Option %s not recognized, assume MUL");
-      assign op = 4'b0100;
-    `endif
+`ifdef MUL
+    assign op = 4'b0100;
+`elsif ADD
+    assign op = 4'b0001;
+`else
+    $error("Option %s not recognized, assume MUL");
+    assign op = 4'b0100;
+`endif
   end
 
   initial begin
@@ -81,13 +81,14 @@ module fpu_tb;
     else count <= count + 16'b1;
   end
 
-  //  always @(posedge clk) begin
   always @(*) begin
-    case (op)
-      4'b0001: golden = add_ans[count];
-      4'b0100: golden = mul_ans[count];
-      default: golden = 16'hx;
-    endcase
+    if (!rst) begin
+      case (op)
+        4'b0001: golden = add_ans[count];
+        4'b0100: golden = mul_ans[count];
+        default: golden = 16'hx;
+      endcase
+    end
   end
 
   always @(negedge clk) begin
