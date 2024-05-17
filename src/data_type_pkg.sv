@@ -10,6 +10,8 @@ package data_type_pkg;
     OP_DIV = 4'b1000
   } op_t;
 
+  localparam DATA_WIDTH = 16;  // For bfloat16
+
 endpackage : data_type_pkg
 
 `endif
