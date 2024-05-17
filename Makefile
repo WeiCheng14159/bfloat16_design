@@ -91,6 +91,7 @@ rtl0: $(BUILD) cp_tb_src
 	+incdir+$(SRC_DIR) \
 	+nc64bit \
 	+access+r \
+	+define+SHM_FILE=\"$(TOP).shm\" \
 	+define+ADD
 
 # Run RTL simulation for SUB
@@ -100,6 +101,7 @@ rtl1: $(BUILD) cp_tb_src
 	+incdir+$(SRC_DIR) \
 	+nc64bit \
 	+access+r \
+	+define+SHM_FILE=\"$(TOP).shm\" \
 	+define+SUB
 
 # Run RTL simulation for MUL
@@ -109,6 +111,7 @@ rtl2: $(BUILD) cp_tb_src
 	+incdir+$(SRC_DIR) \
 	+nc64bit \
 	+access+r \
+	+define+SHM_FILE=\"$(TOP).shm\" \
 	+define+MUL
 
 # Run RTL simulation for DIV
@@ -118,6 +121,7 @@ rtl3: $(BUILD) cp_tb_src
 	+incdir+$(SRC_DIR) \
 	+nc64bit \
 	+access+r \
+	+define+SHM_FILE=\"$(TOP).shm\" \
 	+define+DIV
 
 # View waveform using nWave

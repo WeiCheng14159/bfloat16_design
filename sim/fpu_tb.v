@@ -47,6 +47,11 @@ module fpu_tb;
     count = 16'b0;
   end
 
+initial begin
+    $shm_open(`SHM_FILE);
+    $shm_probe("ASM"); // or AS
+end
+
   initial begin
     $readmemh("INPUT_A.txt", in1_mem, 0, `TEST_CASE - 1);
     $readmemh("INPUT_B.txt", in2_mem, 0, `TEST_CASE - 1);
