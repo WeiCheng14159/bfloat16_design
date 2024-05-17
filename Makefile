@@ -136,14 +136,51 @@ synthesize: $(BUILD) syn_init
 	cp $(SCRIPT_DIR)/${PROC}/synopsys_dc.setup.$(PROC) $(BUILD_DIR)/.synopsys_dc.setup; \
 	dc_shell -f $(SCRIPT_DIR)/dc_syn.tcl -x "set proc ${PROC}";
 
-# Run gate-level simulation (nWave)
-syn: $(BUILD) cp_tb_src syn_init
+# Run gate-level simulation for ADD
+syn0: $(BUILD) cp_tb_src syn_init
 	cd $(BUILD_DIR); \
 	ncverilog $(SIM_DIR)/$(TB_TOP).v $(SYN_DIR)/$(TOP)_syn.v \
 	-v $(CBDK_DIR)/$(CORE_CELL) \
 	+nc64bit \
 	+access+r \
-	+define+FSDB_FILE=\"$(TOP).fsdb\" \
+	+define+SHM_FILE=\"$(TOP).shm\" \
+	+define+ADD \
+	+define+SDF \
+	+define+SDFFILE=\"$(SYN_DIR)/$(TOP)_syn.sdf\"
+
+# Run gate-level simulation for SUB
+syn1: $(BUILD) cp_tb_src syn_init
+	cd $(BUILD_DIR); \
+	ncverilog $(SIM_DIR)/$(TB_TOP).v $(SYN_DIR)/$(TOP)_syn.v \
+	-v $(CBDK_DIR)/$(CORE_CELL) \
+	+nc64bit \
+	+access+r \
+	+define+SHM_FILE=\"$(TOP).shm\" \
+	+define+SUB \
+	+define+SDF \
+	+define+SDFFILE=\"$(SYN_DIR)/$(TOP)_syn.sdf\"
+
+# Run gate-level simulation for MUL
+syn3: $(BUILD) cp_tb_src syn_init
+	cd $(BUILD_DIR); \
+	ncverilog $(SIM_DIR)/$(TB_TOP).v $(SYN_DIR)/$(TOP)_syn.v \
+	-v $(CBDK_DIR)/$(CORE_CELL) \
+	+nc64bit \
+	+access+r \
+	+define+SHM_FILE=\"$(TOP).shm\" \
+	+define+MUL \
+	+define+SDF \
+	+define+SDFFILE=\"$(SYN_DIR)/$(TOP)_syn.sdf\"
+
+# Run gate-level simulation for DIV
+syn3: $(BUILD) cp_tb_src syn_init
+	cd $(BUILD_DIR); \
+	ncverilog $(SIM_DIR)/$(TB_TOP).v $(SYN_DIR)/$(TOP)_syn.v \
+	-v $(CBDK_DIR)/$(CORE_CELL) \
+	+nc64bit \
+	+access+r \
+	+define+SHM_FILE=\"$(TOP).shm\" \
+	+define+DIV \
 	+define+SDF \
 	+define+SDFFILE=\"$(SYN_DIR)/$(TOP)_syn.sdf\"
 
@@ -155,7 +192,8 @@ pr: $(BUILD) cp_tb_src
 	-v $(CBDK_DIR)/$(CORE_CELL) \
 	+nc64bit \
 	+access+r \
-	+define+FSDB_FILE=\"$(TOP).fsdb\" \
+	+define+SHM_FILE=\"$(TOP).shm\" \
+	+define+MUL \
 	+define+SDF \
 	+define+SDFFILE=\"$(APR_DIR)/$(TOP)_pr.sdf\"
 
