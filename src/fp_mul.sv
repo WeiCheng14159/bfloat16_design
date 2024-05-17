@@ -12,6 +12,10 @@ module fp_mul #(
   logic mul_carry_in;
   logic [(2*(FRAC_WIDTH+1))-1:0] mul_tmp;  // 2*(FRAC_WIDTH+1) for multiplication result
   logic [FRAC_WIDTH:0] mul_norm_res;  // FRAC_WIDTH + 1 to handle normalization
+  logic mult_by_zero;
+
+  localparam EXP_ZEROS = {(EXP_WIDTH) {1'b0}}, EXP_ONES = {(EXP_WIDTH) {1'b1}};
+  localparam FRAC_ZEROS = {(FRAC_WIDTH) {1'b0}};
 
   // exp_adder
   assign adder_res = {1'b0, op_intf.op1_exp} + {1'b0, op_intf.op2_exp} - (2 ** (EXP_WIDTH - 1) - 1);
@@ -25,7 +29,10 @@ module fp_mul #(
 
   // fp_mul interface logic
   assign op_intf.op3_sign = op_intf.op1_sign ^ op_intf.op2_sign;
-  assign op_intf.op3_exp = (op_intf.overflow) ? {(EXP_WIDTH) {1'b1}} : adder_out;
-  assign op_intf.op3_frac = mul_norm_res[FRAC_WIDTH:1]  /* + mul_norm_res[0]*/;
+  assign op_intf.op3_exp = (mult_by_zero) ? EXP_ZEROS : (op_intf.overflow) ? EXP_ONES : adder_out;
+  assign op_intf.op3_frac = (mult_by_zero) ? FRAC_ZEROS :  mul_norm_res[FRAC_WIDTH:1]  /* + mul_norm_res[0]*/;
+
+  // Zero detection
+  assign mult_by_zero = ((op_intf.op1_exp == {EXP_WIDTH{1'b0}}) && (op_intf.op1_frac == {FRAC_WIDTH{1'b0}}))  ||   ((op_intf.op2_exp == {EXP_WIDTH{1'b0}}) && (op_intf.op2_frac == {FRAC_WIDTH{1'b0}}));
 
 endmodule
