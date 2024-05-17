@@ -14,8 +14,8 @@ module fpu_tb;
   wire           overflow;
 
   reg     [15:0] add_golden  [`TEST_CASE - 1 : 0];
-  reg     [15:0] mul_golden  [`TEST_CASE - 1 : 0];
   reg     [15:0] sub_golden  [`TEST_CASE - 1 : 0];
+  reg     [15:0] mul_golden  [`TEST_CASE - 1 : 0];
   reg     [15:0] div_golden  [`TEST_CASE - 1 : 0];
   reg     [15:0] in1_mem  [`TEST_CASE - 1 : 0];
   reg     [15:0] in2_mem  [`TEST_CASE - 1 : 0];
@@ -50,20 +50,24 @@ module fpu_tb;
     $readmemh("INPUT_A.txt", in1_mem, 0, `TEST_CASE - 1);
     $readmemh("INPUT_B.txt", in2_mem, 0, `TEST_CASE - 1);
     $readmemh("ADD.txt", add_golden, 0, `TEST_CASE - 1);
+    $readmemh("SUB.txt", sub_golden, 0, `TEST_CASE - 1);
     $readmemh("MUL.txt", mul_golden, 0, `TEST_CASE - 1);    
-    $readmemh("SUB.txt", add_golden, 0, `TEST_CASE - 1);
-    $readmemh("DIV.txt", mul_golden, 0, `TEST_CASE - 1);
+    $readmemh("DIV.txt", div_golden, 0, `TEST_CASE - 1);
   end
 
   initial begin
 `ifdef ADD
     assign op = 4'b0001;
-  `elsif SUB
+    $display("Operation not recognized, assume ADD");
+`elsif SUB
     assign op = 4'b0010;
-  `elsif MUL
+    $display("Operation not recognized, assume SUB");
+`elsif MUL
     assign op = 4'b0100;
-  `elsif DIV
+    $display("Operation not recognized, assume MUL");
+`elsif DIV
     assign op = 4'b1000;
+    $display("Operation not recognized, assume DIV");
 `else
     $display("Operation not recognized, assume MUL");
     assign op = 4'b0100;
