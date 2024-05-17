@@ -3,12 +3,14 @@
 
 package data_type_pkg;
 
-  typedef enum logic [3:0] {
-    OP_ADD = 4'b0001,
-    OP_SUB = 4'b0010,
-    OP_MUL = 4'b0100,
-    OP_DIV = 4'b1000
-  } op_t;
+  localparam MODE_WIDTH = 4;
+
+  typedef enum logic [MODE_WIDTH-1:0] {
+    MODE_ADD = 4'b0001,
+    MODE_SUB = 4'b0010,
+    MODE_MUL = 4'b0100,
+    MODE_DIV = 4'b1000
+  } mode_type;
 
   localparam DATA_WIDTH = 16;  // For bfloat16
 

@@ -3,7 +3,7 @@
 module fpu
   import data_type_pkg::*;
 (
-    input logic [3:0] op_i,
+    input logic [MODE_WIDTH-1:0] op_i,
     input logic [DATA_WIDTH-1:0] in1_i,
     input logic [DATA_WIDTH-1:0] in2_i,
     output logic [DATA_WIDTH-1:0] out_o,
