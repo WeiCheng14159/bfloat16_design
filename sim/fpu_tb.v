@@ -25,6 +25,8 @@ module fpu_tb;
   integer        error;
 
   fpu ul (
+      .clk       (clk),
+      .rst       (rst),
       .mode_i    (mode),
       .in1_i     (in1),
       .in2_i     (in2),
@@ -71,8 +73,9 @@ module fpu_tb;
 
   initial begin
     rst = 1;
-    #`CYCLE;
+    #(`CYCLE / 2);
     rst = 0;
+    #(`CYCLE / 2);
     fin = 0;
     #(`TEST_CASE * `CYCLE);
     fin = 1;
@@ -83,7 +86,7 @@ module fpu_tb;
   assign in1 = in1_mem[count];
   assign in2 = in2_mem[count];
 
-  always @(posedge clk) begin
+  always @(negedge clk) begin
     if (rst) count <= 16'b0;
     else count <= count + 16'b1;
   end
