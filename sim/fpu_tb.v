@@ -13,12 +13,12 @@ module fpu_tb;
   reg     [ 3:0] op;
   wire           overflow;
 
-  reg     [15:0] add_golden  [`TEST_CASE - 1 : 0];
-  reg     [15:0] sub_golden  [`TEST_CASE - 1 : 0];
-  reg     [15:0] mul_golden  [`TEST_CASE - 1 : 0];
-  reg     [15:0] div_golden  [`TEST_CASE - 1 : 0];
-  reg     [15:0] in1_mem  [`TEST_CASE - 1 : 0];
-  reg     [15:0] in2_mem  [`TEST_CASE - 1 : 0];
+  reg     [15:0] add_golden[`TEST_CASE - 1 : 0];
+  reg     [15:0] sub_golden[`TEST_CASE - 1 : 0];
+  reg     [15:0] mul_golden[`TEST_CASE - 1 : 0];
+  reg     [15:0] div_golden[`TEST_CASE - 1 : 0];
+  reg     [15:0] in1_mem   [`TEST_CASE - 1 : 0];
+  reg     [15:0] in2_mem   [`TEST_CASE - 1 : 0];
 
   reg     [15:0] count;
   reg            fin;
@@ -51,7 +51,7 @@ module fpu_tb;
     $readmemh("INPUT_B.txt", in2_mem, 0, `TEST_CASE - 1);
     $readmemh("ADD.txt", add_golden, 0, `TEST_CASE - 1);
     $readmemh("SUB.txt", sub_golden, 0, `TEST_CASE - 1);
-    $readmemh("MUL.txt", mul_golden, 0, `TEST_CASE - 1);    
+    $readmemh("MUL.txt", mul_golden, 0, `TEST_CASE - 1);
     $readmemh("DIV.txt", div_golden, 0, `TEST_CASE - 1);
   end
 
@@ -110,8 +110,8 @@ module fpu_tb;
     else begin
       if (out !== golden) begin  // Exact match
         $write("Error at %0dth cycle:\n", count);
-        $write("Input1: %h, Input2: %h, Expected answer: %h, Your answer: %b %h\n", in1, in2, golden,
-               out, out);
+        $write("Input1: %h, Input2: %h, Expected answer: %h, Your answer: %b %h\n", in1, in2,
+               golden, out, out);
         error <= error + 1;
       end
     end
