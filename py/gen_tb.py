@@ -4,8 +4,8 @@ import random
 
 
 def gen_input(num):
-    a_vec = [x/100 for x in random.sample(range(1, 100), num)]
-    b_vec = [x/100 for x in random.sample(range(1, 100), num)]
+    a_vec = [x/10000 for x in random.sample(range(0, 10001), num)]
+    b_vec = [x/10000 for x in random.sample(range(0, 10001), num)]
 
     in1_f = open("INPUT_A.txt", 'w')
     in2_f = open("INPUT_B.txt", 'w')
@@ -59,5 +59,7 @@ if __name__ == "__main__":
     parser.add_argument('--op', type=str, default="all", choices=["MUL", "ADD", "all"],
                         help='What operations is performed on bfloat16 (e.g. MUL, ADD)')
     args = parser.parse_args()
+
+    assert args.num <= 10000, "Number of samples should be <= 10000"
 
     gen_tb(args.op, args.num)
