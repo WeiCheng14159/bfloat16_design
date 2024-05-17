@@ -34,16 +34,16 @@ def gen_results(op, num, a_vec, b_vec):
 
         if op == "MUL" or op == all_options_str:
             c = a * b
-            mul_f.write(c.convert2hex() + " // " + str(c) + "\n")
+            mul_f.write(c.convert2hex() + " // " + str(c) + ("" if i == num-1 else "\n"))
         if op == "ADD" or op == all_options_str:
             c = a + b
-            add_f.write(c.convert2hex() + " // " + str(c) + "\n")
+            add_f.write(c.convert2hex() + " // " + str(c) + ("" if i == num-1 else "\n"))
         if op == "SUB" or op == all_options_str:
             c = a - b
-            sub_f.write(c.convert2hex() + " // " + str(c) + "\n")
+            sub_f.write(c.convert2hex() + " // " + str(c) + ("" if i == num-1 else "\n"))
         if op == "DIV" or op == all_options_str:
             c = a / b
-            div_f.write(c.convert2hex() + " // " + str(c) + "\n")
+            div_f.write(c.convert2hex() + " // " + str(c) + ("" if i == num-1 else "\n"))
 
 
 def gen_tb(op, num):
