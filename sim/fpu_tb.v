@@ -1,6 +1,5 @@
 `timescale 1ns / 1ns
 
-`define TOTAL_CYCLES 100
 `define CYCLE 50
 `define TEST_CASE 10
 
@@ -79,7 +78,7 @@ module fpu_tb;
     #`CYCLE;
     rst = 0;
     fin = 0;
-    #(`TOTAL_CYCLES * `CYCLE);
+    #(`TEST_CASE * `CYCLE);
     fin = 1;
     #1;
     $finish;
