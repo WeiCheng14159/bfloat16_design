@@ -4,7 +4,7 @@ module op_mux
     parameter EXP_WIDTH  = 8,
     parameter FRAC_WIDTH = 7
 ) (
-    input logic [MODE_WIDTH-1:0] op_i,
+    input logic [MODE_WIDTH-1:0] mode_i,
     input logic [DATA_WIDTH-1:0] in1_i,
     input logic [DATA_WIDTH-1:0] in2_i,
     output logic [DATA_WIDTH-1:0] out_o,
@@ -19,7 +19,7 @@ module op_mux
     {add_intf.op2_sign, add_intf.op2_exp, add_intf.op2_frac} = {{DATA_WIDTH} {1'b0}};
     {mul_intf.op1_sign, mul_intf.op1_exp, mul_intf.op1_frac} = {{DATA_WIDTH} {1'b0}};
     {mul_intf.op2_sign, mul_intf.op2_exp, mul_intf.op2_frac} = {{DATA_WIDTH} {1'b0}};
-    case (op_i)
+    case (mode_i)
       MODE_ADD: begin
         {add_intf.op1_sign, add_intf.op1_exp, add_intf.op1_frac} = {
           in1_i[DATA_WIDTH-1], in1_i[DATA_WIDTH-2-:EXP_WIDTH], in1_i[0+:FRAC_WIDTH]
@@ -43,7 +43,7 @@ module op_mux
   always_comb begin
     out_o = {{DATA_WIDTH} {1'b0}};
     overflow_o = 1'b0;
-    case (op_i)
+    case (mode_i)
       MODE_ADD: begin
         out_o = {add_intf.op3_sign, add_intf.op3_exp, add_intf.op3_frac};
         overflow_o = add_intf.overflow;

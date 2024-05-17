@@ -9,7 +9,7 @@ module fpu_tb;
   reg rst;
   wire [15:0] in1, in2, out;
   reg     [15:0] golden;
-  reg     [ 3:0] op;
+  reg     [ 3:0] mode;
   wire           overflow;
 
   reg     [15:0] add_golden[`TEST_CASE - 1 : 0];
@@ -25,7 +25,7 @@ module fpu_tb;
   integer        error;
 
   fpu ul (
-      .op_i      (op),
+      .mode_i    (mode),
       .in1_i     (in1),
       .in2_i     (in2),
       .out_o     (out),
@@ -56,16 +56,16 @@ module fpu_tb;
 
   initial begin
 `ifdef ADD
-    assign op = 4'b0001;
+    assign mode = 4'b0001;
 `elsif SUB
-    assign op = 4'b0010;
+    assign mode = 4'b0010;
 `elsif MUL
-    assign op = 4'b0100;
+    assign mode = 4'b0100;
 `elsif DIV
-    assign op = 4'b1000;
+    assign mode = 4'b1000;
 `else
-    $display("Operation not recognized, assume MUL");
-    assign op = 4'b0100;
+    $display("Mode not recognized, assume MUL");
+    assign mode = 4'b0100;
 `endif
   end
 
@@ -90,7 +90,7 @@ module fpu_tb;
 
   always @(*) begin
     if (!rst) begin
-      case (op)
+      case (mode)
         4'b0001: golden = add_golden[count];
         4'b0010: golden = sub_golden[count];
         4'b0100: golden = mul_golden[count];

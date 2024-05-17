@@ -3,7 +3,7 @@
 module fpu
   import data_type_pkg::*;
 (
-    input logic [MODE_WIDTH-1:0] op_i,
+    input logic [MODE_WIDTH-1:0] mode_i,
     input logic [DATA_WIDTH-1:0] in1_i,
     input logic [DATA_WIDTH-1:0] in2_i,
     output logic [DATA_WIDTH-1:0] out_o,
@@ -32,7 +32,7 @@ module fpu
       .EXP_WIDTH (EXP_WIDTH),
       .FRAC_WIDTH(FRAC_WIDTH)
   ) u_op_mux (
-      .op_i(op_i),
+      .mode_i(mode_i),
       .in1_i(in1_i),
       .in2_i(in2_i),
       .out_o(out_o),
