@@ -28,7 +28,10 @@ module fpu
       .FRAC_WIDTH(FRAC_WIDTH)
   ) top_intf ();
 
-  op_mux u_op_mux (
+  op_mux #(
+      .EXP_WIDTH (EXP_WIDTH),
+      .FRAC_WIDTH(FRAC_WIDTH)
+  ) u_op_mux (
       .op_i(op_i),
       .in1_i(in1_i),
       .in2_i(in2_i),

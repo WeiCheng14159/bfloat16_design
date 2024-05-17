@@ -1,10 +1,13 @@
 module op_mux
   import data_type_pkg::*;
-(
+#(
+    parameter EXP_WIDTH  = 8,
+    parameter FRAC_WIDTH = 7
+) (
     input logic [MODE_WIDTH-1:0] op_i,
-    input logic [15:0] in1_i,
-    input logic [15:0] in2_i,
-    output logic [15:0] out_o,
+    input logic [DATA_WIDTH-1:0] in1_i,
+    input logic [DATA_WIDTH-1:0] in2_i,
+    output logic [DATA_WIDTH-1:0] out_o,
     output logic overflow_o,
 
     op_intf.bus_side add_intf,
@@ -12,25 +15,25 @@ module op_mux
 );
 
   always_comb begin
-    {add_intf.op1_sign, add_intf.op1_exp, add_intf.op1_frac} = {16'h0};
-    {add_intf.op2_sign, add_intf.op2_exp, add_intf.op2_frac} = {16'h0};
-    {mul_intf.op1_sign, mul_intf.op1_exp, mul_intf.op1_frac} = {16'h0};
-    {mul_intf.op2_sign, mul_intf.op2_exp, mul_intf.op2_frac} = {16'h0};
+    {add_intf.op1_sign, add_intf.op1_exp, add_intf.op1_frac} = {{DATA_WIDTH} {1'b0}};
+    {add_intf.op2_sign, add_intf.op2_exp, add_intf.op2_frac} = {{DATA_WIDTH} {1'b0}};
+    {mul_intf.op1_sign, mul_intf.op1_exp, mul_intf.op1_frac} = {{DATA_WIDTH} {1'b0}};
+    {mul_intf.op2_sign, mul_intf.op2_exp, mul_intf.op2_frac} = {{DATA_WIDTH} {1'b0}};
     case (op_i)
       MODE_ADD: begin
         {add_intf.op1_sign, add_intf.op1_exp, add_intf.op1_frac} = {
-          in1_i[15], in1_i[14:7], in1_i[6:0]
+          in1_i[DATA_WIDTH-1], in1_i[DATA_WIDTH-2-:EXP_WIDTH], in1_i[0+:FRAC_WIDTH]
         };
         {add_intf.op2_sign, add_intf.op2_exp, add_intf.op2_frac} = {
-          in2_i[15], in2_i[14:7], in2_i[6:0]
+          in2_i[DATA_WIDTH-1], in2_i[DATA_WIDTH-2-:EXP_WIDTH], in2_i[0+:FRAC_WIDTH]
         };
       end
       MODE_MUL: begin
         {mul_intf.op1_sign, mul_intf.op1_exp, mul_intf.op1_frac} = {
-          in1_i[15], in1_i[14:7], in1_i[6:0]
+          in1_i[DATA_WIDTH-1], in1_i[DATA_WIDTH-2-:EXP_WIDTH], in1_i[0+:FRAC_WIDTH]
         };
         {mul_intf.op2_sign, mul_intf.op2_exp, mul_intf.op2_frac} = {
-          in2_i[15], in2_i[14:7], in2_i[6:0]
+          in2_i[DATA_WIDTH-1], in2_i[DATA_WIDTH-2-:EXP_WIDTH], in2_i[0+:FRAC_WIDTH]
         };
       end
       default: ;
@@ -38,7 +41,7 @@ module op_mux
   end
 
   always_comb begin
-    out_o = {16'h0};
+    out_o = {{DATA_WIDTH} {1'b0}};
     overflow_o = 1'b0;
     case (op_i)
       MODE_ADD: begin
