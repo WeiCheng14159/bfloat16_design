@@ -1,9 +1,13 @@
 
 
-module fp_add
-  import data_type_pkg::*;
-(
-    op_intf.comp_side op_intf
+module fp_add #(
+    parameter int EXP_WIDTH  = 8,  // Exponent width
+    parameter int FRAC_WIDTH = 7   // Fractional width
+) (
+    op_intf#(
+        .EXP_WIDTH (EXP_WIDTH),
+        .FRAC_WIDTH(FRAC_WIDTH)
+    ).comp_side op_intf
 );
 
   assign op_intf.op3_sign = 0;

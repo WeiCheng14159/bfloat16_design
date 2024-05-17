@@ -36,7 +36,18 @@ module fpu
       .overflow_o(overflow_o)
   );
 
-  fp_add u_add (.op_intf(add_intf));
-  fp_mul u_mul (.op_intf(mul_intf));
+  fp_add #(
+      .EXP_WIDTH (8),
+      .FRAC_WIDTH(7)
+  ) u_add (
+      .op_intf(add_intf)
+  );
+
+  fp_mul #(
+      .EXP_WIDTH (8),
+      .FRAC_WIDTH(7)
+  ) u_mul (
+      .op_intf(mul_intf)
+  );
 
 endmodule
