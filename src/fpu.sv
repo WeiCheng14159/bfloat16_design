@@ -17,16 +17,18 @@ module fpu
       .EXP_WIDTH (EXP_WIDTH),
       .FRAC_WIDTH(FRAC_WIDTH)
   ) add_intf ();
-
+  op_intf #(
+      .EXP_WIDTH (EXP_WIDTH),
+      .FRAC_WIDTH(FRAC_WIDTH)
+  ) sub_intf ();
   op_intf #(
       .EXP_WIDTH (EXP_WIDTH),
       .FRAC_WIDTH(FRAC_WIDTH)
   ) mul_intf ();
-
   op_intf #(
       .EXP_WIDTH (EXP_WIDTH),
       .FRAC_WIDTH(FRAC_WIDTH)
-  ) top_intf ();
+  ) div_intf ();
 
   op_mux #(
       .EXP_WIDTH (EXP_WIDTH),
@@ -37,7 +39,9 @@ module fpu
       .in2_i(in2_i),
       .out_o(out_o),
       .add_intf(add_intf),
+      .sub_intf(sub_intf),
       .mul_intf(mul_intf),
+      .div_intf(div_intf),
       .overflow_o(overflow_o)
   );
 
