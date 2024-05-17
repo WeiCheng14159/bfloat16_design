@@ -1,6 +1,6 @@
 `timescale 1ns / 1ns
 
-`define CYCLE 50
+`define CYCLE 10
 `define TEST_CASE 10
 
 module fpu_tb;
@@ -80,7 +80,7 @@ end
     rst = 1;
     #1;
     rst = 0;
-    #(`CYCLE / 2);
+    #1;
     fin = 0;
     #(`TEST_CASE * `CYCLE);
     fin = 1;
