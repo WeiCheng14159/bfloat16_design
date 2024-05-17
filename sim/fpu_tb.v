@@ -57,16 +57,12 @@ module fpu_tb;
   initial begin
 `ifdef ADD
     assign op = 4'b0001;
-    $display("Operation not recognized, assume ADD");
 `elsif SUB
     assign op = 4'b0010;
-    $display("Operation not recognized, assume SUB");
 `elsif MUL
     assign op = 4'b0100;
-    $display("Operation not recognized, assume MUL");
 `elsif DIV
     assign op = 4'b1000;
-    $display("Operation not recognized, assume DIV");
 `else
     $display("Operation not recognized, assume MUL");
     assign op = 4'b0100;
