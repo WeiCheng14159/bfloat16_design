@@ -4,10 +4,7 @@ module fp_mul #(
     parameter int EXP_WIDTH  = 8,  // Default exponent width
     parameter int FRAC_WIDTH = 7   // Default fractional width
 ) (
-    op_intf#(
-        .EXP_WIDTH (EXP_WIDTH),
-        .FRAC_WIDTH(FRAC_WIDTH)
-    ).comp_side op_intf
+    op_intf.comp_side op_intf
 );
 
   logic [EXP_WIDTH:0] adder_res;  // EXP_WIDTH + 1 to handle overflow

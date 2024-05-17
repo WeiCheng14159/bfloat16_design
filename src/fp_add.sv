@@ -1,18 +1,18 @@
-
+`include "fpu_pkg_inc.sv"
 
 module fp_add #(
-    parameter int EXP_WIDTH  = 8,  // Exponent width
-    parameter int FRAC_WIDTH = 7   // Fractional width
+    parameter EXP_WIDTH  = 8,  // Exponent width
+    parameter FRAC_WIDTH = 7   // Fractional width
 ) (
-    op_intf#(
-        .EXP_WIDTH (EXP_WIDTH),
-        .FRAC_WIDTH(FRAC_WIDTH)
-    ).comp_side op_intf
+    op_intf.comp_side op_intf
 );
 
-  assign op_intf.op3_sign = 0;
-  assign op_intf.op3_exp  = 0;
-  assign op_intf.op3_frac = 0;
-  assign op_intf.overflow = 0;
+  // Use the comp_side modport of the instantiated interface
+  always_comb begin
+    op_intf.op3_sign = 0;
+    op_intf.op3_exp  = 0;
+    op_intf.op3_frac = 0;
+    op_intf.overflow = 0;
+  end
 
 endmodule
