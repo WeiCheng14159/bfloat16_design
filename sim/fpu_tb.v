@@ -13,8 +13,10 @@ module fpu_tb;
   reg     [ 3:0] op;
   wire           overflow;
 
-  reg     [15:0] add_ans  [`TEST_CASE - 1 : 0];
-  reg     [15:0] mul_ans  [`TEST_CASE - 1 : 0];
+  reg     [15:0] add_golden  [`TEST_CASE - 1 : 0];
+  reg     [15:0] mul_golden  [`TEST_CASE - 1 : 0];
+  reg     [15:0] sub_golden  [`TEST_CASE - 1 : 0];
+  reg     [15:0] div_golden  [`TEST_CASE - 1 : 0];
   reg     [15:0] in1_mem  [`TEST_CASE - 1 : 0];
   reg     [15:0] in2_mem  [`TEST_CASE - 1 : 0];
 
@@ -47,15 +49,21 @@ module fpu_tb;
   initial begin
     $readmemh("INPUT_A.txt", in1_mem, 0, `TEST_CASE - 1);
     $readmemh("INPUT_B.txt", in2_mem, 0, `TEST_CASE - 1);
-    $readmemh("ADD.txt", add_ans, 0, `TEST_CASE - 1);
-    $readmemh("MUL.txt", mul_ans, 0, `TEST_CASE - 1);
+    $readmemh("ADD.txt", add_golden, 0, `TEST_CASE - 1);
+    $readmemh("MUL.txt", mul_golden, 0, `TEST_CASE - 1);    
+    $readmemh("SUB.txt", add_golden, 0, `TEST_CASE - 1);
+    $readmemh("DIV.txt", mul_golden, 0, `TEST_CASE - 1);
   end
 
   initial begin
-`ifdef MUL
-    assign op = 4'b0100;
-`elsif ADD
+`ifdef ADD
     assign op = 4'b0001;
+  `elsif SUB
+    assign op = 4'b0010;
+  `elsif MUL
+    assign op = 4'b0100;
+  `elsif DIV
+    assign op = 4'b1000;
 `else
     $display("Operation not recognized, assume MUL");
     assign op = 4'b0100;
@@ -84,8 +92,10 @@ module fpu_tb;
   always @(*) begin
     if (!rst) begin
       case (op)
-        4'b0001: golden = add_ans[count];
-        4'b0100: golden = mul_ans[count];
+        4'b0001: golden = add_golden[count];
+        4'b0010: golden = sub_golden[count];
+        4'b0100: golden = mul_golden[count];
+        4'b1000: golden = div_golden[count];
         default: golden = 16'hx;
       endcase
     end
@@ -96,7 +106,7 @@ module fpu_tb;
     else begin
       if (out !== golden) begin  // Exact match
         $write("Error at %0dth cycle:\n", count);
-        $write("Input1: %h, Input2: %h, Real answer: %h, Your answer: %b %h\n", in1, in2, golden,
+        $write("Input1: %h, Input2: %h, Expected answer: %h, Your answer: %b %h\n", in1, in2, golden,
                out, out);
         error <= error + 1;
       end

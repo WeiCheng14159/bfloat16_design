@@ -102,6 +102,24 @@ rtl1: $(BUILD) cp_tb_src
 	+access+r \
 	+define+ADD
 
+# Run RTL simulation for SUB
+rtl2: $(BUILD) cp_tb_src
+	cd $(BUILD_DIR); \
+	ncverilog $(SIM_DIR)/$(TB_TOP).v $(SRC) \
+	+incdir+$(SRC_DIR) \
+	+nc64bit \
+	+access+r \
+	+define+SUB
+
+# Run RTL simulation for DIV
+rtl3: $(BUILD) cp_tb_src
+	cd $(BUILD_DIR); \
+	ncverilog $(SIM_DIR)/$(TB_TOP).v $(SRC) \
+	+incdir+$(SRC_DIR) \
+	+nc64bit \
+	+access+r \
+	+define+DIV
+
 # View waveform using nWave
 nw: $(BUILD)
 	cd $(BUILD_DIR); \
