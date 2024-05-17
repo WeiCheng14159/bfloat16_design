@@ -10,9 +10,21 @@ module fpu
     output logic overflow_o
 );
 
-  op_intf add_intf ();
-  op_intf mul_intf ();
-  op_intf top_intf ();
+  // Operand interfaces for bfloat16 format
+  op_intf #(
+      .EXP_WIDTH (8),
+      .FRAC_WIDTH(7)
+  ) add_intf ();
+
+  op_intf #(
+      .EXP_WIDTH (8),
+      .FRAC_WIDTH(7)
+  ) mul_intf ();
+
+  op_intf #(
+      .EXP_WIDTH (8),
+      .FRAC_WIDTH(7)
+  ) top_intf ();
 
   op_mux u_op_mux (
       .op_i(op_i),
