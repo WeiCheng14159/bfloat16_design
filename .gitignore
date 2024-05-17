@@ -8,6 +8,9 @@
 *.err
 *.bak
 
+# Simvision
+.simvision/
+
 # Calibre DRC
 *.db
 *.sum
