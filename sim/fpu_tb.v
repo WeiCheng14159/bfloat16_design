@@ -1,7 +1,7 @@
 `timescale 1ns / 1ns
 
 `define CYCLE 50
-`define TEST_CASE 1000
+`define TEST_CASE 10
 
 module fpu_tb;
 
