@@ -10,20 +10,22 @@ module fpu
     output logic overflow_o
 );
 
+  localparam EXP_WIDTH = 8, FRAC_WIDTH = 7;
+
   // Operand interfaces for bfloat16 format
   op_intf #(
-      .EXP_WIDTH (8),
-      .FRAC_WIDTH(7)
+      .EXP_WIDTH (EXP_WIDTH),
+      .FRAC_WIDTH(FRAC_WIDTH)
   ) add_intf ();
 
   op_intf #(
-      .EXP_WIDTH (8),
-      .FRAC_WIDTH(7)
+      .EXP_WIDTH (EXP_WIDTH),
+      .FRAC_WIDTH(FRAC_WIDTH)
   ) mul_intf ();
 
   op_intf #(
-      .EXP_WIDTH (8),
-      .FRAC_WIDTH(7)
+      .EXP_WIDTH (EXP_WIDTH),
+      .FRAC_WIDTH(FRAC_WIDTH)
   ) top_intf ();
 
   op_mux u_op_mux (
@@ -37,15 +39,15 @@ module fpu
   );
 
   fp_add #(
-      .EXP_WIDTH (8),
-      .FRAC_WIDTH(7)
+      .EXP_WIDTH (EXP_WIDTH),
+      .FRAC_WIDTH(FRAC_WIDTH)
   ) u_add (
       .op_intf(add_intf)
   );
 
   fp_mul #(
-      .EXP_WIDTH (8),
-      .FRAC_WIDTH(7)
+      .EXP_WIDTH (EXP_WIDTH),
+      .FRAC_WIDTH(FRAC_WIDTH)
   ) u_mul (
       .op_intf(mul_intf)
   );
