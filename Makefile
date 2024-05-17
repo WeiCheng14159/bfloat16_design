@@ -124,11 +124,6 @@ rtl3: $(BUILD) cp_tb_src
 	+define+SHM_FILE=\"$(TOP).shm\" \
 	+define+DIV
 
-# View waveform using nWave
-nw: $(BUILD)
-	cd $(BUILD_DIR); \
-	nWave -f $(TOP).fsdb -sswr $(NC_DIR)/signal.rc +access+r +nc64bit &
-
 # Run synthesize with Design Compiler
 synthesize: $(BUILD) syn_init
 	rm -rf $(SYN_DIR)/*; \
