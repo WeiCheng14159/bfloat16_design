@@ -25,8 +25,8 @@ def gen_results(op, num, a_vec, b_vec):
 
     mul_f = open("MUL.txt", 'w')
     add_f = open("ADD.txt", 'w')
-    # sub_f = open("SUB.txt", 'w')
-    # div_f = open("DIV.txt", 'w')
+    sub_f = open("SUB.txt", 'w')
+    div_f = open("DIV.txt", 'w')
 
     for i in range(num):
         a = bfloat16(a_vec[i])
@@ -38,14 +38,12 @@ def gen_results(op, num, a_vec, b_vec):
         if op == "ADD" or op == all_options_str:
             c = a + b
             add_f.write(c.convert2hex() + " // " + str(c) + "\n")
-
-        # if op == "SUB" or op == all_options_str:
-        #     c = a - b
-        #     sub_f.write(c.convert2hex() + " // " + str(c) + "\n")
-
-        # if op == "DIV" or op == all_options_str:
-        #     c = a / b
-        #     div_f.write(c.convert2hex() + " // " + str(c) + "\n")
+        if op == "SUB" or op == all_options_str:
+            c = a - b
+            sub_f.write(c.convert2hex() + " // " + str(c) + "\n")
+        if op == "DIV" or op == all_options_str:
+            c = a / b
+            div_f.write(c.convert2hex() + " // " + str(c) + "\n")
 
 
 def gen_tb(op, num):
