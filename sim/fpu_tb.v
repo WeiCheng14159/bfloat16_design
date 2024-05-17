@@ -78,7 +78,7 @@ end
 
   initial begin
     rst = 1;
-    #(`CYCLE / 2);
+    #1;
     rst = 0;
     #(`CYCLE / 2);
     fin = 0;
