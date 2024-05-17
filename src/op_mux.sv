@@ -17,9 +17,13 @@ module op_mux
 );
 
   always_comb begin
-    {add_intf.op1_sign, add_intf.op1_exp, add_intf.op1_frac} = {{DATA_WIDTH} {1'b0}};
+    {add_intf.op1_sign, add_intf.op1_exp, add_intf.op1_frac} = {{DATA_WIDTH} {1'b0}};  // ADD
+    {add_intf.op2_sign, add_intf.op2_exp, add_intf.op2_frac} = {{DATA_WIDTH} {1'b0}};
+    {sub_intf.op1_sign, sub_intf.op1_exp, sub_intf.op1_frac} = {{DATA_WIDTH} {1'b0}};  // SUB
     {sub_intf.op2_sign, sub_intf.op2_exp, sub_intf.op2_frac} = {{DATA_WIDTH} {1'b0}};
-    {mul_intf.op1_sign, mul_intf.op1_exp, mul_intf.op1_frac} = {{DATA_WIDTH} {1'b0}};
+    {mul_intf.op1_sign, mul_intf.op1_exp, mul_intf.op1_frac} = {{DATA_WIDTH} {1'b0}};  // MUL
+    {mul_intf.op2_sign, mul_intf.op2_exp, mul_intf.op2_frac} = {{DATA_WIDTH} {1'b0}};
+    {div_intf.op1_sign, div_intf.op1_exp, div_intf.op1_frac} = {{DATA_WIDTH} {1'b0}};  // DIV
     {div_intf.op2_sign, div_intf.op2_exp, div_intf.op2_frac} = {{DATA_WIDTH} {1'b0}};
     case (mode_i)
       MODE_ADD: begin
