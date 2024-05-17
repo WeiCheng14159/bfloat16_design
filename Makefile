@@ -84,17 +84,8 @@ check:
 format:
 	find $(SRC_DIR) -name "*.sv" -or -name "*.v" -or -name "*.svh" | xargs verible-verilog-format --inplace
 
-# Run RTL simulation for MUL
-rtl0: $(BUILD) cp_tb_src
-	cd $(BUILD_DIR); \
-	ncverilog $(SIM_DIR)/$(TB_TOP).v $(SRC) \
-	+incdir+$(SRC_DIR) \
-	+nc64bit \
-	+access+r \
-	+define+MUL
-
 # Run RTL simulation for ADD
-rtl1: $(BUILD) cp_tb_src
+rtl0: $(BUILD) cp_tb_src
 	cd $(BUILD_DIR); \
 	ncverilog $(SIM_DIR)/$(TB_TOP).v $(SRC) \
 	+incdir+$(SRC_DIR) \
@@ -103,13 +94,22 @@ rtl1: $(BUILD) cp_tb_src
 	+define+ADD
 
 # Run RTL simulation for SUB
-rtl2: $(BUILD) cp_tb_src
+rtl1: $(BUILD) cp_tb_src
 	cd $(BUILD_DIR); \
 	ncverilog $(SIM_DIR)/$(TB_TOP).v $(SRC) \
 	+incdir+$(SRC_DIR) \
 	+nc64bit \
 	+access+r \
 	+define+SUB
+
+# Run RTL simulation for MUL
+rtl2: $(BUILD) cp_tb_src
+	cd $(BUILD_DIR); \
+	ncverilog $(SIM_DIR)/$(TB_TOP).v $(SRC) \
+	+incdir+$(SRC_DIR) \
+	+nc64bit \
+	+access+r \
+	+define+MUL
 
 # Run RTL simulation for DIV
 rtl3: $(BUILD) cp_tb_src
