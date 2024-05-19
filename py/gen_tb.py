@@ -42,7 +42,10 @@ def gen_results(op, num, a_vec, b_vec):
             c = a - b
             sub_f.write(c.convert2hex() + " // " + str(c) + ("" if i == num-1 else "\n"))
         if op == "DIV" or op == all_options_str:
-            c = a / b
+            try: 
+                c = a / b
+            except: 
+                c = bfloat16(float('inf'))
             div_f.write(c.convert2hex() + " // " + str(c) + ("" if i == num-1 else "\n"))
 
 
