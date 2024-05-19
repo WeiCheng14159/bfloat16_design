@@ -12,6 +12,7 @@ package data_type_pkg;
     MODE_DIV = 4'b1000
   } mode_type;
 
+  localparam POS_SIGN = 1'b0, NEG_SIGN = 1'b1;
   localparam DATA_WIDTH = 16;  // For bfloat16
 
 endpackage : data_type_pkg
