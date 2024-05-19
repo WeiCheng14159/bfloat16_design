@@ -4,8 +4,8 @@ import random
 
 
 def gen_input(num):
-    a_vec = [x/10000 for x in random.sample(range(0, 10001), num)]
-    b_vec = [x/10000 for x in random.sample(range(0, 10001), num)]
+    a_vec = [x/10000 for x in random.sample(range(-10000, 10001), num)]
+    b_vec = [x/10000 for x in random.sample(range(-10000, 10001), num)]
 
     in1_f = open("INPUT_A.txt", 'w')
     in2_f = open("INPUT_B.txt", 'w')
