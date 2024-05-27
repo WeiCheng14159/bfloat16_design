@@ -1,0 +1,25 @@
+#! /c/Source/iverilog-install/bin/vvp
+:ivl_version "12.0 (devel)" "(s20150603-1539-g2693dd32b)";
+:ivl_delay_selection "TYPICAL";
+:vpi_time_precision + 0;
+:vpi_module "C:\iverilog\lib\ivl\system.vpi";
+:vpi_module "C:\iverilog\lib\ivl\vhdl_sys.vpi";
+:vpi_module "C:\iverilog\lib\ivl\vhdl_textio.vpi";
+:vpi_module "C:\iverilog\lib\ivl\v2005_math.vpi";
+:vpi_module "C:\iverilog\lib\ivl\va_math.vpi";
+S_0000027bec8f2620 .scope module, "test_param" "test_param" 2 1;
+ .timescale 0 0;
+P_0000027bec924cd0 .param/l "WIDTH" 0 2 2, +C4<00000000000000000000000000001000>;
+v0000027bec8f32e0_0 .var "num127", 7 0;
+    .scope S_0000027bec8f2620;
+T_0 ;
+    %pushi/vec4 127, 0, 8;
+    %store/vec4 v0000027bec8f32e0_0, 0, 8;
+    %vpi_call 2 8 "$display", "127: %b", v0000027bec8f32e0_0 {0 0 0};
+    %end;
+    .thread T_0;
+# The file index is used to find the file name in the following table.
+:file_names 3;
+    "N/A";
+    "<interactive>";
+    "test_param.v";
