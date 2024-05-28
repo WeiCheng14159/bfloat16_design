@@ -166,7 +166,7 @@ syn1: $(BUILD) cp_tb_src syn_init
 	+define+SDFFILE=\"$(SYN_DIR)/$(TOP)_syn.sdf\"
 
 # Run gate-level simulation for MUL
-syn3: $(BUILD) cp_tb_src syn_init
+syn2: $(BUILD) cp_tb_src syn_init
 	cd $(BUILD_DIR); \
 	ncverilog $(SIM_DIR)/$(TB_TOP).v $(SYN_DIR)/$(TOP)_syn.v \
 	-v $(CBDK_DIR)/$(CORE_CELL) \
