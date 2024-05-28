@@ -7,12 +7,14 @@ SYN_DIR            =$(ROOT_DIR)/syn
 SCRIPT_DIR         =$(ROOT_DIR)/script
 REPORT_DIR         =$(ROOT_DIR)/report
 NC_DIR             =$(ROOT_DIR)/conf
+INC_DIR            =$(ROOT_DIR)/include
 
 TB_TOP             =fpu_tb
 TOP                =fpu
 
 SRC=$(shell find $(SRC_DIR) -name "*.v" -o -name "*.sv")
 TB_SRC=$(shell ls $(SIM_DIR)/*.txt)
+INC_SRC=$(shell ls $(INC_DIR)/*.svh)
 
 # icc, u18, t18
 PROC               =t65
@@ -84,45 +86,53 @@ check:
 format:
 	find $(SRC_DIR) -name "*.sv" -or -name "*.v" -or -name "*.svh" | xargs verible-verilog-format --inplace
 
+# RTL simulator: ncverilog or iverilog
+RTL_SIM ?= ncverilog
+
+# Define the base command for ncverilog and iverilog
+NCVERILOG_CMD = ncverilog $(SIM_DIR)/$(TB_TOP).v $(SRC) +incdir+$(SRC_DIR) +nc64bit +access+r
+IVERILOG_CMD = iverilog -g2012 $(SRC) $(SIM_DIR)/$(TB_TOP).v -I $(INC_DIR) -o $(BUILD_DIR)/$(TB_TOP).vvp
+IVERILOG_SIM_CMD = vvp $(BUILD_DIR)/$(TB_TOP).vvp
+
 # Run RTL simulation for ADD
 rtl0: $(BUILD) cp_tb_src
 	cd $(BUILD_DIR); \
-	ncverilog $(SIM_DIR)/$(TB_TOP).v $(SRC) \
-	+incdir+$(SRC_DIR) \
-	+nc64bit \
-	+access+r \
-	+define+SHM_FILE=\"$(TOP).shm\" \
-	+define+ADD
+	if [ "$(RTL_SIM)" = "ncverilog" ]; then \
+		$(NCVERILOG_CMD) +define+SHM_FILE=\"$(TOP).shm\" +define+ADD; \
+	else \
+		$(IVERILOG_CMD) -D ADD; \
+		$(IVERILOG_SIM_CMD); \
+	fi
 
 # Run RTL simulation for SUB
 rtl1: $(BUILD) cp_tb_src
 	cd $(BUILD_DIR); \
-	ncverilog $(SIM_DIR)/$(TB_TOP).v $(SRC) \
-	+incdir+$(SRC_DIR) \
-	+nc64bit \
-	+access+r \
-	+define+SHM_FILE=\"$(TOP).shm\" \
-	+define+SUB
+	if [ "$(RTL_SIM)" = "ncverilog" ]; then \
+		$(NCVERILOG_CMD) +define+SHM_FILE=\"$(TOP).shm\" +define+SUB; \
+	else \
+		$(IVERILOG_CMD) -D SUB; \
+		$(IVERILOG_SIM_CMD); \
+	fi
 
 # Run RTL simulation for MUL
 rtl2: $(BUILD) cp_tb_src
 	cd $(BUILD_DIR); \
-	ncverilog $(SIM_DIR)/$(TB_TOP).v $(SRC) \
-	+incdir+$(SRC_DIR) \
-	+nc64bit \
-	+access+r \
-	+define+SHM_FILE=\"$(TOP).shm\" \
-	+define+MUL
+	if [ "$(RTL_SIM)" = "ncverilog" ]; then \
+		$(NCVERILOG_CMD) +define+SHM_FILE=\"$(TOP).shm\" +define+MUL; \
+	else \
+		$(IVERILOG_CMD) -D MUL; \
+		$(IVERILOG_SIM_CMD); \
+	fi
 
 # Run RTL simulation for DIV
 rtl3: $(BUILD) cp_tb_src
 	cd $(BUILD_DIR); \
-	ncverilog $(SIM_DIR)/$(TB_TOP).v $(SRC) \
-	+incdir+$(SRC_DIR) \
-	+nc64bit \
-	+access+r \
-	+define+SHM_FILE=\"$(TOP).shm\" \
-	+define+DIV
+	if [ "$(RTL_SIM)" = "ncverilog" ]; then \
+		$(NCVERILOG_CMD) +define+SHM_FILE=\"$(TOP).shm\" +define+DIV; \
+	else \
+		$(IVERILOG_CMD) -D DIV; \
+		$(IVERILOG_SIM_CMD); \
+	fi
 
 # Run synthesize with Design Compiler
 synthesize: $(BUILD) syn_init

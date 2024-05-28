@@ -1,86 +1,105 @@
-module op_mux
-  import data_type_pkg::*;
-#(
+`include "fpu_pkg_inc.svh"
+
+module op_mux #(
     parameter EXP_WIDTH  = 8,
     parameter FRAC_WIDTH = 7
 ) (
-    input logic [MODE_WIDTH-1:0] mode_i,
-    input logic [DATA_WIDTH-1:0] in1_i,
-    input logic [DATA_WIDTH-1:0] in2_i,
-    output logic [DATA_WIDTH-1:0] out_o,
+    // External inputs and outputs 
+    input logic [`MODE_WIDTH-1:0] mode_i,
+    input logic [`DATA_WIDTH-1:0] in1_i,
+    input logic [`DATA_WIDTH-1:0] in2_i,
+    output logic [`DATA_WIDTH-1:0] out_o,
     output logic overflow_o,
 
-    op_intf.bus_side add_intf,
-    op_intf.bus_side sub_intf,
-    op_intf.bus_side mul_intf,
-    op_intf.bus_side div_intf
+    // Addition outputs
+    output logic add_op1_sign_o,
+    output logic add_op2_sign_o,
+    output logic [EXP_WIDTH-1:0] add_op1_exp_o,
+    output logic [EXP_WIDTH-1:0] add_op2_exp_o,
+    output logic [FRAC_WIDTH-1:0] add_op1_frac_o,
+    output logic [FRAC_WIDTH-1:0] add_op2_frac_o,
+    // Addition inputs
+    input logic add_op3_sign_i,
+    input logic [EXP_WIDTH-1:0] add_op3_exp_i,
+    input logic [FRAC_WIDTH-1:0] add_op3_frac_i,
+    input logic add_overflow_i,
+
+    // Subtraction outputs
+    output logic sub_op1_sign_o,
+    output logic sub_op2_sign_o,
+    output logic [EXP_WIDTH-1:0] sub_op1_exp_o,
+    output logic [EXP_WIDTH-1:0] sub_op2_exp_o,
+    output logic [FRAC_WIDTH-1:0] sub_op1_frac_o,
+    output logic [FRAC_WIDTH-1:0] sub_op2_frac_o,
+    // Subtraction inputs
+    input logic sub_op3_sign_i,
+    input logic [EXP_WIDTH-1:0] sub_op3_exp_i,
+    input logic [FRAC_WIDTH-1:0] sub_op3_frac_i,
+    input logic sub_overflow_i,
+
+    // Multiplication outputs
+    output logic mul_op1_sign_o,
+    output logic mul_op2_sign_o,
+    output logic [EXP_WIDTH-1:0] mul_op1_exp_o,
+    output logic [EXP_WIDTH-1:0] mul_op2_exp_o,
+    output logic [FRAC_WIDTH-1:0] mul_op1_frac_o,
+    output logic [FRAC_WIDTH-1:0] mul_op2_frac_o,
+    // Multiplication inputs
+    input logic mul_op3_sign_i,
+    input logic [EXP_WIDTH-1:0] mul_op3_exp_i,
+    input logic [FRAC_WIDTH-1:0] mul_op3_frac_i,
+    input logic mul_overflow_i,
+
+    // Division outputs
+    output logic div_op1_sign_o,
+    output logic div_op2_sign_o,
+    output logic [EXP_WIDTH-1:0] div_op1_exp_o,
+    output logic [EXP_WIDTH-1:0] div_op2_exp_o,
+    output logic [FRAC_WIDTH-1:0] div_op1_frac_o,
+    output logic [FRAC_WIDTH-1:0] div_op2_frac_o,
+    // Division inputs
+    input logic div_op3_sign_i,
+    input logic [EXP_WIDTH-1:0] div_op3_exp_i,
+    input logic [FRAC_WIDTH-1:0] div_op3_frac_i,
+    input logic div_overflow_i
 );
 
-  always_comb begin
-    {add_intf.op1_sign, add_intf.op1_exp, add_intf.op1_frac} = {{DATA_WIDTH} {1'b0}};  // ADD
-    {add_intf.op2_sign, add_intf.op2_exp, add_intf.op2_frac} = {{DATA_WIDTH} {1'b0}};
-    {sub_intf.op1_sign, sub_intf.op1_exp, sub_intf.op1_frac} = {{DATA_WIDTH} {1'b0}};  // SUB
-    {sub_intf.op2_sign, sub_intf.op2_exp, sub_intf.op2_frac} = {{DATA_WIDTH} {1'b0}};
-    {mul_intf.op1_sign, mul_intf.op1_exp, mul_intf.op1_frac} = {{DATA_WIDTH} {1'b0}};  // MUL
-    {mul_intf.op2_sign, mul_intf.op2_exp, mul_intf.op2_frac} = {{DATA_WIDTH} {1'b0}};
-    {div_intf.op1_sign, div_intf.op1_exp, div_intf.op1_frac} = {{DATA_WIDTH} {1'b0}};  // DIV
-    {div_intf.op2_sign, div_intf.op2_exp, div_intf.op2_frac} = {{DATA_WIDTH} {1'b0}};
+  always @(*) begin
+    // ADD
+    {add_op1_sign_o, add_op1_exp_o, add_op1_frac_o} = {1'b0, {EXP_WIDTH{1'b0}}, {FRAC_WIDTH{1'b0}}};
+    {add_op2_sign_o, add_op2_exp_o, add_op2_frac_o} = {1'b0, {EXP_WIDTH{1'b0}}, {FRAC_WIDTH{1'b0}}};
+    // SUB
+    {sub_op1_sign_o, sub_op1_exp_o, sub_op1_frac_o} = {1'b0, {EXP_WIDTH{1'b0}}, {FRAC_WIDTH{1'b0}}};
+    {sub_op2_sign_o, sub_op2_exp_o, sub_op2_frac_o} = {1'b0, {EXP_WIDTH{1'b0}}, {FRAC_WIDTH{1'b0}}};
+    // MUL
+    {mul_op1_sign_o, mul_op1_exp_o, mul_op1_frac_o} = {1'b0, {EXP_WIDTH{1'b0}}, {FRAC_WIDTH{1'b0}}};
+    {mul_op2_sign_o, mul_op2_exp_o, mul_op2_frac_o} = {1'b0, {EXP_WIDTH{1'b0}}, {FRAC_WIDTH{1'b0}}};
+    // DIV
+    {div_op1_sign_o, div_op1_exp_o, div_op1_frac_o} = {1'b0, {EXP_WIDTH{1'b0}}, {FRAC_WIDTH{1'b0}}};
+    {div_op2_sign_o, div_op2_exp_o, div_op2_frac_o} = {1'b0, {EXP_WIDTH{1'b0}}, {FRAC_WIDTH{1'b0}}};
+    // op3
+    {out_o, overflow_o} = {{`DATA_WIDTH{1'b0}}, 1'b0};
+    // Directly connecting inputs to corresponding operation outputs based on the mode
     case (mode_i)
-      MODE_ADD: begin
-        {add_intf.op1_sign, add_intf.op1_exp, add_intf.op1_frac} = {
-          in1_i[DATA_WIDTH-1], in1_i[DATA_WIDTH-2-:EXP_WIDTH], in1_i[0+:FRAC_WIDTH]
-        };
-        {add_intf.op2_sign, add_intf.op2_exp, add_intf.op2_frac} = {
-          in2_i[DATA_WIDTH-1], in2_i[DATA_WIDTH-2-:EXP_WIDTH], in2_i[0+:FRAC_WIDTH]
-        };
+      `MODE_ADD: begin
+        {add_op1_sign_o, add_op1_exp_o, add_op1_frac_o} = in1_i;
+        {add_op2_sign_o, add_op2_exp_o, add_op2_frac_o} = in2_i;
+        {out_o, overflow_o} = {add_op3_sign_i, add_op3_exp_i, add_op3_frac_i, add_overflow_i};
       end
-      MODE_SUB: begin
-        {sub_intf.op1_sign, sub_intf.op1_exp, sub_intf.op1_frac} = {
-          in1_i[DATA_WIDTH-1], in1_i[DATA_WIDTH-2-:EXP_WIDTH], in1_i[0+:FRAC_WIDTH]
-        };
-        {sub_intf.op2_sign, sub_intf.op2_exp, sub_intf.op2_frac} = {
-          in2_i[DATA_WIDTH-1], in2_i[DATA_WIDTH-2-:EXP_WIDTH], in2_i[0+:FRAC_WIDTH]
-        };
+      `MODE_SUB: begin
+        {sub_op1_sign_o, sub_op1_exp_o, sub_op1_frac_o} = in1_i;
+        {sub_op2_sign_o, sub_op2_exp_o, sub_op2_frac_o} = in2_i;
+        {out_o, overflow_o} = {sub_op3_sign_i, sub_op3_exp_i, sub_op3_frac_i, sub_overflow_i};
       end
-      MODE_MUL: begin
-        {mul_intf.op1_sign, mul_intf.op1_exp, mul_intf.op1_frac} = {
-          in1_i[DATA_WIDTH-1], in1_i[DATA_WIDTH-2-:EXP_WIDTH], in1_i[0+:FRAC_WIDTH]
-        };
-        {mul_intf.op2_sign, mul_intf.op2_exp, mul_intf.op2_frac} = {
-          in2_i[DATA_WIDTH-1], in2_i[DATA_WIDTH-2-:EXP_WIDTH], in2_i[0+:FRAC_WIDTH]
-        };
+      `MODE_MUL: begin
+        {mul_op1_sign_o, mul_op1_exp_o, mul_op1_frac_o} = in1_i;
+        {mul_op2_sign_o, mul_op2_exp_o, mul_op2_frac_o} = in2_i;
+        {out_o, overflow_o} = {mul_op3_sign_i, mul_op3_exp_i, mul_op3_frac_i, mul_overflow_i};
       end
-      MODE_DIV: begin
-        {div_intf.op1_sign, div_intf.op1_exp, div_intf.op1_frac} = {
-          in1_i[DATA_WIDTH-1], in1_i[DATA_WIDTH-2-:EXP_WIDTH], in1_i[0+:FRAC_WIDTH]
-        };
-        {div_intf.op2_sign, div_intf.op2_exp, div_intf.op2_frac} = {
-          in2_i[DATA_WIDTH-1], in2_i[DATA_WIDTH-2-:EXP_WIDTH], in2_i[0+:FRAC_WIDTH]
-        };
-      end
-      default: ;
-    endcase
-  end
-
-  always_comb begin
-    out_o = {{DATA_WIDTH} {1'b0}};
-    overflow_o = 1'b0;
-    case (mode_i)
-      MODE_ADD: begin
-        out_o = {add_intf.op3_sign, add_intf.op3_exp, add_intf.op3_frac};
-        overflow_o = add_intf.overflow;
-      end
-      MODE_SUB: begin
-        out_o = {sub_intf.op3_sign, sub_intf.op3_exp, sub_intf.op3_frac};
-        overflow_o = sub_intf.overflow;
-      end
-      MODE_MUL: begin
-        out_o = {mul_intf.op3_sign, mul_intf.op3_exp, mul_intf.op3_frac};
-        overflow_o = mul_intf.overflow;
-      end
-      MODE_DIV: begin
-        out_o = {div_intf.op3_sign, div_intf.op3_exp, div_intf.op3_frac};
-        overflow_o = div_intf.overflow;
+      `MODE_DIV: begin
+        {div_op1_sign_o, div_op1_exp_o, div_op1_frac_o} = in1_i;
+        {div_op2_sign_o, div_op2_exp_o, div_op2_frac_o} = in2_i;
+        {out_o, overflow_o} = {div_op3_sign_i, div_op3_exp_i, div_op3_frac_i, div_overflow_i};
       end
       default: ;
     endcase
