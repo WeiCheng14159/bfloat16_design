@@ -3,11 +3,12 @@ module iv_fp_mul(
     input [DATA_WIDTH-1:0] in1,
     input [DATA_WIDTH-1:0] in2,
     output [DATA_WIDTH-1:0] out,
-    output overflow
+    output [ERROR_WIDTH-1:0] error
 );
     parameter DATA_WIDTH = 16;
     parameter EXP_WIDTH = 8;
     parameter FRAC_WIDTH = 7;
+    parameter ERROR_WIDTH = 2;
 
     wire op1_sign, op2_sign, op3_sign;
     wire [EXP_WIDTH-1:0] op1_exp, op2_exp, op3_exp;
@@ -35,13 +36,18 @@ module iv_fp_mul(
     assign frac_prod_norm = normalise ? frac_prod[(2*FRAC_WIDTH):FRAC_WIDTH+1] : frac_prod[(2*FRAC_WIDTH)-1:FRAC_WIDTH];
     
     // Exponent
-    wire [EXP_WIDTH:0] exp_sum;
+    wire [EXP_WIDTH:0] exp_sum, exp_sum_plus_1, exp_sum_exp1_plus_exp2;
     wire [EXP_WIDTH-1:0] exp_sum_norm;
-    assign exp_sum = {1'b0, op1_exp} + {1'b0, op2_exp} - 8'd127; // 8 is exp width
-    assign exp_sum_norm = normalise ? (exp_sum[EXP_WIDTH-1:0] + 1) : exp_sum[EXP_WIDTH-1:0];
+    assign exp_sum_exp1_plus_exp2 = {1'b0, op1_exp} + {1'b0, op2_exp};
+    assign exp_sum = exp_sum_exp1_plus_exp2 - 9'd127; // 9 is exp_sum width
+    assign exp_sum_plus_1 = exp_sum + 9'b1; // 9 is exp_sum width
+    assign exp_sum_norm = normalise ? exp_sum_plus_1[EXP_WIDTH-1:0] : exp_sum[EXP_WIDTH-1:0];
 
-    // Overflow detection
-    assign overflow = exp_sum[EXP_WIDTH];
+    // Error detection
+    wire overflow, underflow;
+    assign overflow = normalise ? exp_sum_plus_1[EXP_WIDTH] : exp_sum[EXP_WIDTH];
+    assign underflow = !(exp_sum_exp1_plus_exp2[EXP_WIDTH-1]) & (normalise ? exp_sum_plus_1[EXP_WIDTH-1] : exp_sum[EXP_WIDTH-1]);
+    assign error = underflow ? 2'b10 : (overflow ? 2'b1 : 2'b0);
 
     // Final Output
     wire mult_by_zero = (((op1_exp == {EXP_WIDTH{1'b0}}) & (op1_frac == {FRAC_WIDTH{1'b0}})) || ((op2_exp == {EXP_WIDTH{1'b0}}) & (op2_frac == {FRAC_WIDTH{1'b0}})));

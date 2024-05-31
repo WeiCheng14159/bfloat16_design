@@ -1,17 +1,17 @@
 `timescale 1 ns / 100 ps
 module iv_fp_mul_tb;
-
+    parameter ERROR_WIDTH = 2;
     parameter DATA_WIDTH = 16;  // Set according to your module's requirement
     reg [DATA_WIDTH-1:0] in1, in2;
     wire [DATA_WIDTH-1:0] out;
-    wire overflow;
+    wire [ERROR_WIDTH-1:0] error;
 
     // Instantiate the module
     iv_fp_mul uut (
         .in1(in1),
         .in2(in2),
         .out(out),
-        .overflow(overflow)
+        .error(error)
     );
 
     // Memory to store input test vectors
@@ -20,8 +20,8 @@ module iv_fp_mul_tb;
     integer i;
 
     initial begin
-        $readmemh("../test_files/INPUT_A.txt", num_1);
-        $readmemh("../test_files/INPUT_B.txt", num_2);
+        $readmemh("../../../gen_tb/test_files/INPUT_A.txt", num_1);
+        $readmemh("../../../gen_tb/test_files/INPUT_B.txt", num_2);
         
         // Apply test vectors
         for (i = 0; i < 10; i++) begin  // Loop through all test cases
@@ -30,7 +30,7 @@ module iv_fp_mul_tb;
             #10; // Delay for observation, adjust as needed
 
             // Display results for each test
-            $display("Test %d: in1 = %h, in2 = %h, out = %h, overflow = %b", i, in1, in2, out, overflow);
+            $display("Test %d: in1 = %h, in2 = %h, out = %h, error = %d", i, in1, in2, out, error);
         end
 
         $finish; // End simulation
