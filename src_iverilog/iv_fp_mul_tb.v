@@ -36,5 +36,10 @@ module iv_fp_mul_tb;
         $finish; // End simulation
     end
 
+    initial begin
+        $dumpfile("iv_fp_mul_tb.vcd");
+        $dumpvars(0, iv_fp_mul_tb);
+    end
+
     
 endmodule

@@ -44,10 +44,15 @@ module iv_fp_mul(
     assign exp_sum_norm = normalise ? exp_sum_plus_1[EXP_WIDTH-1:0] : exp_sum[EXP_WIDTH-1:0];
 
     // Error detection
-    wire overflow, underflow;
-    assign overflow = normalise ? exp_sum_plus_1[EXP_WIDTH] : exp_sum[EXP_WIDTH];
-    assign underflow = !(exp_sum_exp1_plus_exp2[EXP_WIDTH-1]) & (normalise ? exp_sum_plus_1[EXP_WIDTH-1] : exp_sum[EXP_WIDTH-1]);
-    assign error = underflow ? 2'b10 : (overflow ? 2'b1 : 2'b0);
+    wire in1_is_NaN, in1_is_inf, in1_is_zero;
+    wire in2_is_NaN, in2_is_inf, in2_is_zero;
+
+    wire overflow, underflow, NaN, inf;
+    assign overflow = exp_sum_exp1_plus_exp2[EXP_WIDTH] & (normalise ? exp_sum_plus_1[EXP_WIDTH] : exp_sum[EXP_WIDTH]);
+
+    assign underflow = !(exp_sum_exp1_plus_exp2[EXP_WIDTH]) & (normalise ? exp_sum_plus_1[EXP_WIDTH] : exp_sum[EXP_WIDTH]);
+    
+    assign error = overflow ? 2'b1 : (underflow ? 2'b10 : 2'b0);
 
     // Final Output
     wire mult_by_zero = (((op1_exp == {EXP_WIDTH{1'b0}}) & (op1_frac == {FRAC_WIDTH{1'b0}})) || ((op2_exp == {EXP_WIDTH{1'b0}}) & (op2_frac == {FRAC_WIDTH{1'b0}})));
