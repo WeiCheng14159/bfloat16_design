@@ -1,5 +1,5 @@
 $date
-	Sat Jun 01 15:21:52 2024
+	Wed Jun 05 14:14:46 2024
 $end
 $version
 	Icarus Verilog
@@ -18,62 +18,168 @@ $var integer 32 ' i [31:0] $end
 $scope module uut $end
 $var wire 16 ( in1 [15:0] $end
 $var wire 16 ) in2 [15:0] $end
-$var wire 1 * mult_by_zero $end
-$var wire 1 + op3_sign $end
-$var wire 1 , overflow $end
-$var wire 1 - underflow $end
-$var wire 16 . out [15:0] $end
-$var wire 7 / op3_frac [6:0] $end
-$var wire 8 0 op3_exp [7:0] $end
-$var wire 1 1 op2_sign $end
-$var wire 7 2 op2_frac [6:0] $end
-$var wire 8 3 op2_exp [7:0] $end
-$var wire 1 4 op1_sign $end
-$var wire 7 5 op1_frac [6:0] $end
-$var wire 8 6 op1_exp [7:0] $end
-$var wire 1 7 normalise $end
-$var wire 7 8 frac_prod_norm [6:0] $end
-$var wire 16 9 frac_prod [15:0] $end
-$var wire 9 : exp_sum_plus_1 [8:0] $end
-$var wire 8 ; exp_sum_norm [7:0] $end
-$var wire 9 < exp_sum_exp1_plus_exp2 [8:0] $end
-$var wire 9 = exp_sum [8:0] $end
-$var wire 2 > error [1:0] $end
-$var parameter 32 ? DATA_WIDTH $end
-$var parameter 32 @ ERROR_WIDTH $end
-$var parameter 32 A EXP_WIDTH $end
-$var parameter 32 B FRAC_WIDTH $end
+$var wire 1 * op3_sign $end
+$var wire 1 + out_is_NaN $end
+$var wire 1 , out_is_inf $end
+$var wire 1 - out_is_zero $end
+$var wire 1 . overflow $end
+$var wire 1 / underflow $end
+$var wire 16 0 out [15:0] $end
+$var wire 7 1 op3_frac [6:0] $end
+$var wire 8 2 op3_exp [7:0] $end
+$var wire 1 3 op2_sign $end
+$var wire 7 4 op2_frac [6:0] $end
+$var wire 8 5 op2_exp [7:0] $end
+$var wire 1 6 op1_sign $end
+$var wire 7 7 op1_frac [6:0] $end
+$var wire 8 8 op1_exp [7:0] $end
+$var wire 1 9 normalise $end
+$var wire 1 : in2_is_zero $end
+$var wire 1 ; in2_is_inf $end
+$var wire 1 < in2_is_NaN $end
+$var wire 1 = in1_is_zero $end
+$var wire 1 > in1_is_inf $end
+$var wire 1 ? in1_is_NaN $end
+$var wire 7 @ frac_prod_norm [6:0] $end
+$var wire 16 A frac_prod [15:0] $end
+$var wire 9 B exp_sum_plus_1 [8:0] $end
+$var wire 8 C exp_sum_norm [7:0] $end
+$var wire 9 D exp_sum_exp1_plus_exp2 [8:0] $end
+$var wire 9 E exp_sum [8:0] $end
+$var wire 2 F error [1:0] $end
+$var parameter 32 G DATA_WIDTH $end
+$var parameter 32 H ERROR_WIDTH $end
+$var parameter 32 I EXP_WIDTH $end
+$var parameter 32 J FRAC_WIDTH $end
+$scope module is_NaN_1 $end
+$var wire 1 ? is_NaN_out $end
+$var wire 16 K num [15:0] $end
+$var wire 7 L frac [6:0] $end
+$var wire 8 M exp [7:0] $end
+$var parameter 32 N DATA_WIDTH $end
+$var parameter 32 O EXP_WIDTH $end
+$var parameter 32 P FRAC_WIDTH $end
+$upscope $end
+$scope module is_NaN_2 $end
+$var wire 1 < is_NaN_out $end
+$var wire 16 Q num [15:0] $end
+$var wire 7 R frac [6:0] $end
+$var wire 8 S exp [7:0] $end
+$var parameter 32 T DATA_WIDTH $end
+$var parameter 32 U EXP_WIDTH $end
+$var parameter 32 V FRAC_WIDTH $end
+$upscope $end
+$scope module is_inf_1 $end
+$var wire 1 > is_inf_out $end
+$var wire 16 W num [15:0] $end
+$var wire 7 X frac [6:0] $end
+$var wire 8 Y exp [7:0] $end
+$var parameter 32 Z DATA_WIDTH $end
+$var parameter 32 [ EXP_WIDTH $end
+$var parameter 32 \ FRAC_WIDTH $end
+$upscope $end
+$scope module is_inf_2 $end
+$var wire 1 ; is_inf_out $end
+$var wire 16 ] num [15:0] $end
+$var wire 7 ^ frac [6:0] $end
+$var wire 8 _ exp [7:0] $end
+$var parameter 32 ` DATA_WIDTH $end
+$var parameter 32 a EXP_WIDTH $end
+$var parameter 32 b FRAC_WIDTH $end
+$upscope $end
+$scope module is_zero_1 $end
+$var wire 1 = is_zero_out $end
+$var wire 16 c num [15:0] $end
+$var wire 7 d frac [6:0] $end
+$var wire 8 e exp [7:0] $end
+$var parameter 32 f DATA_WIDTH $end
+$var parameter 32 g EXP_WIDTH $end
+$var parameter 32 h FRAC_WIDTH $end
+$upscope $end
+$scope module is_zero_2 $end
+$var wire 1 : is_zero_out $end
+$var wire 16 i num [15:0] $end
+$var wire 7 j frac [6:0] $end
+$var wire 8 k exp [7:0] $end
+$var parameter 32 l DATA_WIDTH $end
+$var parameter 32 m EXP_WIDTH $end
+$var parameter 32 n FRAC_WIDTH $end
+$upscope $end
 $upscope $end
 $upscope $end
 $enddefinitions $end
 $comment Show the parameter values. $end
 $dumpall
-b111 B
-b1000 A
-b10 @
-b10000 ?
+b111 n
+b1000 m
+b10000 l
+b111 h
+b1000 g
+b10000 f
+b111 b
+b1000 a
+b10000 `
+b111 \
+b1000 [
+b10000 Z
+b111 V
+b1000 U
+b10000 T
+b111 P
+b1000 O
+b10000 N
+b111 J
+b1000 I
+b10 H
+b10000 G
 b10 $
 b10000 #
 $end
 #0
 $dumpvars
-b10 >
-b110000001 =
-b0 <
-b10000001 ;
-b110000010 :
-b100000100000001 9
-b10 8
-07
-b0 6
-b1 5
-04
-b0 3
-b1 2
-01
-b10000001 0
-b10 /
-b100000010000010 .
+b0 k
+b1 j
+b1 i
+b0 e
+b1 d
+b1 c
+b0 _
+b1 ^
+b1 ]
+b0 Y
+b1 X
+b1 W
+b0 S
+b1 R
+b1 Q
+b0 M
+b1 L
+b1 K
+b10 F
+b110000001 E
+b0 D
+b10000001 C
+b110000010 B
+b100000100000001 A
+b10 @
+0?
+0>
+0=
+0<
+0;
+0:
+09
+b0 8
+b1 7
+06
+b0 5
+b1 4
+03
+b0 2
+b0 1
+b0 0
+1/
+0.
 1-
 0,
 0+
@@ -84,191 +190,317 @@ b0 '
 b1 &
 b1 %
 b10 "
-b100000010000010 !
+b0 !
 $end
 #100
-b11111111 0
-b1 "
-b1 >
-b111111111111110 !
-b111111111111110 .
-b1111110 /
-1,
+b11111111 2
 0-
-b10000000 ;
-b1111110 8
-17
-b11111111 3
-b1111111 2
-b110000000 :
-b101111111 =
-b111111110 <
-b11111111 6
-b1111111000000001 9
-b1111111 5
+b111111111000000 !
+b111111111000000 0
+b1000000 1
+b11 "
+b11 F
+1+
+0/
+1.
+b10000000 C
+b1111110 @
+1<
+19
+1?
+b11111111 5
+b1111111 4
+b11111111 S
+b1111111 R
+b11111111 _
+b1111111 ^
+b11111111 k
+b1111111 j
+b110000000 B
+b101111111 E
+b111111110 D
+b11111111 8
+b1111111000000001 A
+b1111111 7
+b11111111 M
+b1111111 L
+b11111111 Y
+b1111111 X
+b11111111 e
+b1111111 d
 b111111111111111 &
 b111111111111111 )
+b111111111111111 Q
+b111111111111111 ]
+b111111111111111 i
 b111111111111111 %
 b111111111111111 (
+b111111111111111 K
+b111111111111111 W
+b111111111111111 c
 b1 '
 #200
-b10000001 0
+b0 2
+1-
 b0 "
-b0 >
-0,
-b100000010000010 !
-b100000010000010 .
-b10 /
-b10000001 ;
-b10 8
-07
-b10000000 3
-b1 2
-b10000010 :
-b10000001 =
-b100000000 <
-b10000000 6
-b100000100000001 9
-b1 5
+b0 F
+b0 !
+b0 0
+b0 1
+0+
+0.
+b10000001 C
+b10 @
+09
+0<
+0?
+b10000000 5
+b1 4
+b10000000 S
+b1 R
+b10000000 _
+b1 ^
+b10000000 k
+b1 j
+b10000010 B
+b10000001 E
+b100000000 D
+b10000000 8
+b100000100000001 A
+b1 7
+b10000000 M
+b1 L
+b10000000 Y
+b1 X
+b10000000 e
+b1 d
 b100000000000001 &
 b100000000000001 )
+b100000000000001 Q
+b100000000000001 ]
+b100000000000001 i
 b100000000000001 %
 b100000000000001 (
+b100000000000001 K
+b100000000000001 W
+b100000000000001 c
 b10 '
 #300
 b10 "
-b10 >
-b111111110000010 !
-b111111110000010 .
-b11111111 0
-1-
-b11111111 ;
-b111111 3
-b0 :
-b111111111 =
-b1111110 <
-b111111 6
+b10 F
+1/
+b11111111 C
+b111111 5
+b111111 S
+b111111 _
+b111111 k
+b0 B
+b111111111 E
+b1111110 D
+b111111 8
+b111111 M
+b111111 Y
+b111111 e
 b1111110000001 &
 b1111110000001 )
+b1111110000001 Q
+b1111110000001 ]
+b1111110000001 i
 b1111110000001 %
 b1111110000001 (
+b1111110000001 K
+b1111110000001 W
+b1111110000001 c
 b11 '
 #400
 b0 "
-b0 >
-b110000010 !
-b110000010 .
-b11 0
-0-
-b11 ;
-b1000001 3
-b100 :
-b11 =
-b10000010 <
-b1000001 6
+b0 F
+0/
+b11 C
+b1000001 5
+b1000001 S
+b1000001 _
+b1000001 k
+b100 B
+b11 E
+b10000010 D
+b1000001 8
+b1000001 M
+b1000001 Y
+b1000001 e
 b10000010000001 &
 b10000010000001 )
+b10000010000001 Q
+b10000010000001 ]
+b10000010000001 i
 b10000010000001 %
 b10000010000001 (
+b10000010000001 K
+b10000010000001 W
+b10000010000001 c
 b100 '
 #500
-b1111010 0
-b11110101111000 !
-b11110101111000 .
-b1111000 /
-b1111010 ;
-b1111000 8
-b1111101 3
-b1110011 2
-b1111011 :
-b1111010 =
-b11111001 <
-b1111100 6
-b111110001011001 9
-b11 5
+b1111010 C
+b1111000 @
+b1111101 5
+b1110011 4
+b1111101 S
+b1110011 R
+b1111101 _
+b1110011 ^
+b1111101 k
+b1110011 j
+b1111011 B
+b1111010 E
+b11111001 D
+b1111100 8
+b111110001011001 A
+b11 7
+b1111100 M
+b11 L
+b1111100 Y
+b11 X
+b1111100 e
+b11 d
 b11111011110011 &
 b11111011110011 )
+b11111011110011 Q
+b11111011110011 ]
+b11111011110011 i
 b11111000000011 %
 b11111000000011 (
+b11111000000011 K
+b11111000000011 W
+b11111000000011 c
 b101 '
 #600
-b1111110 0
-b11111100011010 !
-b11111100011010 .
-b11010 /
-b1111110 ;
-b11010 8
-17
-b1111110 3
-b101100 2
-b1111110 :
-b1111101 =
-b11111100 <
-b1111110 6
-b1001101010001000 9
-b1100110 5
+b1111110 C
+b11010 @
+19
+b1111110 5
+b101100 4
+b1111110 S
+b101100 R
+b1111110 _
+b101100 ^
+b1111110 k
+b101100 j
+b1111110 B
+b1111101 E
+b11111100 D
+b1111110 8
+b1001101010001000 A
+b1100110 7
+b1111110 M
+b1100110 L
+b1111110 Y
+b1100110 X
+b1111110 e
+b1100110 d
 b11111100101100 &
 b11111100101100 )
+b11111100101100 Q
+b11111100101100 ]
+b11111100101100 i
 b11111101100110 %
 b11111101100110 (
+b11111101100110 K
+b11111101100110 W
+b11111101100110 c
 b110 '
 #700
-b1111101 0
-b11111011011010 !
-b11111011011010 .
-b1011010 /
-b1111101 ;
-b1011010 8
-07
-b11001 2
-b110110101011111 9
-b110111 5
+b1111101 C
+b1011010 @
+09
+b11001 4
+b11001 R
+b11001 ^
+b11001 j
+b110110101011111 A
+b110111 7
+b110111 L
+b110111 X
+b110111 d
 b11111100011001 &
 b11111100011001 )
+b11111100011001 Q
+b11111100011001 ]
+b11111100011001 i
 b11111100110111 %
 b11111100110111 (
+b11111100110111 K
+b11111100110111 W
+b11111100110111 c
 b111 '
 #800
-b1110100 0
-b11101000001011 !
-b11101000001011 .
-b1011 /
-b1110100 ;
-b1011 8
-17
-b1110101 3
-b10000 2
-b1110100 :
-b1110011 =
-b11110010 <
-b1111101 6
-b1000101110000000 9
-b1111000 5
+b1110100 C
+b1011 @
+19
+b1110101 5
+b10000 4
+b1110101 S
+b10000 R
+b1110101 _
+b10000 ^
+b1110101 k
+b10000 j
+b1110100 B
+b1110011 E
+b11110010 D
+b1111101 8
+b1000101110000000 A
+b1111000 7
+b1111101 M
+b1111000 L
+b1111101 Y
+b1111000 X
+b1111101 e
+b1111000 d
 b11101010010000 &
 b11101010010000 )
+b11101010010000 Q
+b11101010010000 ]
+b11101010010000 i
 b11111011111000 %
 b11111011111000 (
+b11111011111000 K
+b11111011111000 W
+b11111011111000 c
 b1000 '
 #900
-b1111101 0
-b11111011011101 !
-b11111011011101 .
-b1011101 /
-b1111101 ;
-b1011101 8
-07
-b1111110 3
-b100000 2
-b1111110 :
-b1111101 =
-b11111100 <
-b1111110 6
-b110111010100000 9
-b110001 5
+b1111101 C
+b1011101 @
+09
+b1111110 5
+b100000 4
+b1111110 S
+b100000 R
+b1111110 _
+b100000 ^
+b1111110 k
+b100000 j
+b1111110 B
+b1111101 E
+b11111100 D
+b1111110 8
+b110111010100000 A
+b110001 7
+b1111110 M
+b110001 L
+b1111110 Y
+b110001 X
+b1111110 e
+b110001 d
 b11111100100000 &
 b11111100100000 )
+b11111100100000 Q
+b11111100100000 ]
+b11111100100000 i
 b11111100110001 %
 b11111100110001 (
+b11111100110001 K
+b11111100110001 W
+b11111100110001 c
 b1001 '
 #1000
 b1010 '

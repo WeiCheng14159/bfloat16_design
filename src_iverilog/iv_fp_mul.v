@@ -46,21 +46,33 @@ module iv_fp_mul(
     // Error detection
     wire in1_is_NaN, in1_is_inf, in1_is_zero;
     wire in2_is_NaN, in2_is_inf, in2_is_zero;
+    wire out_is_NaN, out_is_inf, out_is_zero;
 
     wire overflow, underflow, NaN, inf;
     assign overflow = exp_sum_exp1_plus_exp2[EXP_WIDTH] & (normalise ? exp_sum_plus_1[EXP_WIDTH] : exp_sum[EXP_WIDTH]);
 
-    assign underflow = !(exp_sum_exp1_plus_exp2[EXP_WIDTH]) & (normalise ? exp_sum_plus_1[EXP_WIDTH] : exp_sum[EXP_WIDTH]);
-    
-    assign error = overflow ? 2'b1 : (underflow ? 2'b10 : 2'b0);
+    assign underflow = ~(exp_sum_exp1_plus_exp2[EXP_WIDTH]) & (normalise ? exp_sum_plus_1[EXP_WIDTH] : exp_sum[EXP_WIDTH]);
 
-    // Final Output
-    wire mult_by_zero = (((op1_exp == {EXP_WIDTH{1'b0}}) & (op1_frac == {FRAC_WIDTH{1'b0}})) || ((op2_exp == {EXP_WIDTH{1'b0}}) & (op2_frac == {FRAC_WIDTH{1'b0}})));
+    is_NaN is_NaN_1(.num(in1), .is_NaN_out(in1_is_NaN));
+    is_inf is_inf_1(.num(in1), .is_inf_out(in1_is_inf));
+    is_zero is_zero_1(.num(in1), .is_zero_out(in1_is_zero));
+
+    is_NaN is_NaN_2(.num(in2), .is_NaN_out(in2_is_NaN));
+    is_inf is_inf_2(.num(in2), .is_inf_out(in2_is_inf));
+    is_zero is_zero_2(.num(in2), .is_zero_out(in2_is_zero));
+
+
+    assign out_is_NaN = (in1_is_NaN) | (in2_is_NaN) | ((in1_is_inf) & (in2_is_zero)) | ((in1_is_zero) & (in2_is_inf));
+    assign out_is_inf = ((in1_is_inf) & ~(in2_is_zero) & ~(in2_is_NaN)) | (~(in1_is_zero) & ~(in1_is_NaN) & (in2_is_inf));
+    assign out_is_zero = (~(in1_is_inf) & ~(in1_is_NaN) & (in2_is_zero)) | (~(in1_is_zero) & ~(in2_is_NaN) & ~(in2_is_inf));
+    
+    assign error = out_is_NaN ? 2'b11 : (overflow ? 2'b1 : (underflow ? 2'b10 : 2'b0));
+
     // Sign bit
-    assign op3_sign = (op1_sign) ^ (op2_sign);
+    assign op3_sign = (op1_sign) ^ (op2_sign); // Might need to change
     // Exponent
-    assign op3_exp = mult_by_zero ? 8'b0 : (overflow ? 8'b11111111 : exp_sum_norm);
+    assign op3_exp = (out_is_NaN | out_is_inf) ? 8'b11111111 : ((out_is_zero | underflow) ? 8'b0 : exp_sum_norm);
     // Fraction
-    assign op3_frac = mult_by_zero ? 7'b0 : frac_prod_norm;
+    assign op3_frac = out_is_NaN ? {1'b1, 6'b0} : ((out_is_inf | out_is_zero | underflow) ? 7'b0 : frac_prod_norm);
 
 endmodule
