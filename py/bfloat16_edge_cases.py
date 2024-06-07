@@ -57,25 +57,25 @@ def mult_test(test_case='NaN_x_pos_inf'):
         print(f'-Inf x -0   = {c.convert2hex()} = {s} | {e} | {f}')
     elif test_case == 'pos_inf_x_pos_num':
         a = get_pos_inf()
-        b= bfloat16('0x1F81')
+        b = bfloat16(1234.0/10000.0)
         c = a * b
         s, e, f = splice_bfloat_binary(c.convert2bin())
         print(f'+Inf x +N   = {c.convert2hex()} = {s} | {e} | {f}')
     elif test_case == 'pos_inf_x_neg_num':
         a = get_pos_inf()
-        b= bfloat16('0x9F81')
+        b = bfloat16(-1234.0/10000.0)
         c = a * b
         s, e, f = splice_bfloat_binary(c.convert2bin())
         print(f'+Inf x -N   = {c.convert2hex()} = {s} | {e} | {f}')
     elif test_case == 'neg_inf_x_pos_num':
         a = get_neg_inf()
-        b= bfloat16('0x1F81')
+        b = bfloat16(1234.0/10000.0)
         c = a * b
         s, e, f = splice_bfloat_binary(c.convert2bin())
         print(f'-Inf x +N   = {c.convert2hex()} = {s} | {e} | {f}')
     elif test_case == 'neg_inf_x_neg_num':
         a = get_neg_inf()
-        b= bfloat16('0x9F81')
+        b = bfloat16(-1234.0/10000.0)
         c = a * b
         s, e, f = splice_bfloat_binary(c.convert2bin())
         print(f'-Inf x -N   = {c.convert2hex()} = {s} | {e} | {f}')
