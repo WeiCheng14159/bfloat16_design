@@ -67,16 +67,16 @@ module iv_fp_mul(
 
 
     assign out_is_NaN = (NaN_input) | (inf_x_0);
-    assign out_is_inf = ((in1_is_inf) & ~(in2_is_zero) & ~(in2_is_NaN)) | (~(in1_is_zero) & ~(in1_is_NaN) & (in2_is_inf));
-    assign out_is_zero = (~(in1_is_inf) & ~(in1_is_NaN) & (in2_is_zero)) | (~(in1_is_zero) & ~(in2_is_NaN) & ~(in2_is_inf));
+    assign out_is_inf = ((in1_is_inf) & ~(in2_is_zero) & ~(in2_is_NaN)) | (~(in1_is_zero) & ~(in1_is_NaN) & (in2_is_inf)) | (overflow);
+    assign out_is_zero = (~(in1_is_inf) & ~(in1_is_NaN) & (in2_is_zero)) | ((in1_is_zero) & ~(in2_is_NaN) & ~(in2_is_inf)) | (underflow);
     
     assign error = out_is_NaN ? 2'b11 : (overflow ? 2'b1 : (underflow ? 2'b10 : 2'b0));
 
     // Sign bit
     assign op3_sign = NaN_input ? 1'b0 : ((inf_x_0) ? 1'b1 : ((op1_sign) ^ (op2_sign)));
     // Exponent
-    assign op3_exp = (out_is_NaN | out_is_inf) ? 8'b11111111 : ((out_is_zero | underflow) ? 8'b0 : exp_sum_norm);
+    assign op3_exp = (out_is_NaN | out_is_inf) ? 8'b11111111 : ((out_is_zero) ? 8'b0 : exp_sum_norm);
     // Fraction
-    assign op3_frac = out_is_NaN ? {1'b1, 6'b0} : ((out_is_inf | out_is_zero | underflow) ? 7'b0 : frac_prod_norm);
+    assign op3_frac = out_is_NaN ? {1'b1, 6'b0} : ((out_is_inf | out_is_zero) ? 7'b0 : frac_prod_norm);
 
 endmodule

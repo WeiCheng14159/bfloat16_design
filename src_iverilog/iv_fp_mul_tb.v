@@ -20,8 +20,10 @@ module iv_fp_mul_tb;
     integer i;
 
     initial begin
-        $readmemh("../../../gen_tb/test_files/INPUT_A.txt", num_1);
-        $readmemh("../../../gen_tb/test_files/INPUT_B.txt", num_2);
+        $readmemh("../../../gen_tb/test_files/EDGE_A.txt", num_1);
+        $readmemh("../../../gen_tb/test_files/EDGE_B.txt", num_2);
+        // $readmemh("../../../gen_tb/test_files/INPUT_A.txt", num_1);
+        // $readmemh("../../../gen_tb/test_files/INPUT_B.txt", num_2);
         
         // Apply test vectors
         for (i = 0; i < 10; i++) begin  // Loop through all test cases
@@ -30,7 +32,7 @@ module iv_fp_mul_tb;
             #10; // Delay for observation, adjust as needed
 
             // Display results for each test
-            $display("Test %d: in1 = %h, in2 = %h, out = %h, error = %d", i, in1, in2, out, error);
+            $display("Test %d: in1 = 0x%h, in2 = 0x%h, out = 0x%h, error = %d", i, in1, in2, out, error);
         end
 
         $finish; // End simulation
