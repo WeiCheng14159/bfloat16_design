@@ -43,6 +43,12 @@ module iv_fp_mul(
     assign exp_sum_plus_1 = exp_sum + 9'b1; // 9 is exp_sum width
     assign exp_sum_norm = normalise ? exp_sum_plus_1[EXP_WIDTH-1:0] : exp_sum[EXP_WIDTH-1:0];
 
+    // -1 Exponent Case
+    wire exp_underflow_border;
+    wire [FRAC_WIDTH-1:0] frac_prod_underflow_border;
+    assign exp_underflow_border = (&exp_sum_norm) | ~(|exp_sum_norm);
+    assign frac_prod_underflow_border = frac_prod[(2*FRAC_WIDTH)+1:FRAC_WIDTH+2];
+
     // Error detection
     wire in1_is_NaN, in1_is_inf, in1_is_zero;
     wire in2_is_NaN, in2_is_inf, in2_is_zero;
@@ -51,7 +57,7 @@ module iv_fp_mul(
     wire overflow, underflow, NaN, inf;
     assign overflow = exp_sum_exp1_plus_exp2[EXP_WIDTH] & (normalise ? exp_sum_plus_1[EXP_WIDTH] : exp_sum[EXP_WIDTH]);
 
-    assign underflow = ~(exp_sum_exp1_plus_exp2[EXP_WIDTH]) & (normalise ? exp_sum_plus_1[EXP_WIDTH] : exp_sum[EXP_WIDTH]);
+    assign underflow = ~(exp_underflow_border) & ~(exp_sum_exp1_plus_exp2[EXP_WIDTH]) & (normalise ? exp_sum_plus_1[EXP_WIDTH] : exp_sum[EXP_WIDTH]);
 
     is_NaN is_NaN_1(.num(in1), .is_NaN_out(in1_is_NaN));
     is_inf is_inf_1(.num(in1), .is_inf_out(in1_is_inf));
@@ -75,8 +81,8 @@ module iv_fp_mul(
     // Sign bit
     assign op3_sign = NaN_input ? 1'b0 : ((inf_x_0) ? 1'b1 : ((op1_sign) ^ (op2_sign)));
     // Exponent
-    assign op3_exp = (out_is_NaN | out_is_inf) ? 8'b11111111 : ((out_is_zero) ? 8'b0 : exp_sum_norm);
+    assign op3_exp = (out_is_NaN | out_is_inf) ? 8'b11111111 : ((out_is_zero | exp_underflow_border) ? 8'b0 : exp_sum_norm);
     // Fraction
-    assign op3_frac = out_is_NaN ? {1'b1, 6'b0} : ((out_is_inf | out_is_zero) ? 7'b0 : frac_prod_norm);
+    assign op3_frac = out_is_NaN ? {1'b1, 6'b0} : ((out_is_inf | out_is_zero) ? 7'b0 : ((exp_underflow_border) ? frac_prod_underflow_border : frac_prod_norm));
 
 endmodule

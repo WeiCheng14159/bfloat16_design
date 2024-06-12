@@ -20,10 +20,10 @@ module iv_fp_mul_tb;
     integer i;
 
     initial begin
-        $readmemh("../../../gen_tb/test_files/EDGE_A.txt", num_1);
-        $readmemh("../../../gen_tb/test_files/EDGE_B.txt", num_2);
-        // $readmemh("../../../gen_tb/test_files/INPUT_A.txt", num_1);
-        // $readmemh("../../../gen_tb/test_files/INPUT_B.txt", num_2);
+        // $readmemh("../../../gen_tb/test_files/EDGE_A.txt", num_1);
+        // $readmemh("../../../gen_tb/test_files/EDGE_B.txt", num_2);
+        $readmemh("../../../gen_tb/test_files/INPUT_A.txt", num_1);
+        $readmemh("../../../gen_tb/test_files/INPUT_B.txt", num_2);
         
         // Apply test vectors
         for (i = 0; i < 10; i++) begin  // Loop through all test cases
